@@ -25,6 +25,7 @@
     "plantuml-encoder": "^1.4.0",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
+    "react-zoom-pan-pinch": "^3.7.0",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7"
   },

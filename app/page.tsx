@@ -39,6 +39,9 @@ import {
 } from 'lucide-react'
 
 import plantumlEncoder from 'plantuml-encoder'
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
+import { ZoomIn, ZoomOut, RotateCw } from 'lucide-react'
+import UMLViewer from '@/components/UMLViewer'
 
 export default function UMLGenerator() {
 	const [description, setDescription] = useState('')
@@ -174,36 +177,7 @@ MainEntity -- RelatedEntity
 
 	// Mock function to render UML diagram
 	const renderUML = () => {
-		try {
-			const encodedUML = plantumlEncoder.encode(umlCode)
-			const plantUMLServer = 'https://www.plantuml.com/plantuml/svg/'
-			const url = plantUMLServer + encodedUML
-			return (
-				<div className="flex items-center justify-center h-full bg-muted/30 rounded-md p-4">
-					{isGenerating ? (
-						<div className="flex flex-col items-center gap-2">
-							<RefreshCw className="animate-spin h-8 w-8" />
-							<p>Generating diagram...</p>
-						</div>
-					) : (
-						<img
-							src={url}
-							alt="UML Diagram Preview"
-							className="max-w-full max-h-full object-contain"
-						/>
-					)}
-				</div>
-			)
-		} catch (error) {
-			console.error('Error rendering UML:', error)
-			return (
-				<div className="flex items-center justify-center h-full bg-muted/30 rounded-md p-4">
-					<div className="text-center text-muted-foreground">
-						<p>Error generating diagram</p>
-					</div>
-				</div>
-			)
-		}
+		return UMLViewer({ umlCode, isGenerating })
 	}
 	const handleTemplateChange = (type: string) => {
 		setDiagramType(type)
