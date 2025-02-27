@@ -2,7 +2,7 @@
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 import { RefreshCw, ZoomIn, ZoomOut, RotateCw } from 'lucide-react'
 import plantumlEncoder from 'plantuml-encoder'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const UMLViewer = ({
 	umlCode,
@@ -13,13 +13,20 @@ const UMLViewer = ({
 	isGenerating: boolean
 	setImage: (url: string) => void
 }) => {
-	try {
-		const encodedUML = plantumlEncoder.encode(umlCode)
-		const plantUMLServer = 'https://www.plantuml.com/plantuml/svg/'
-		const url = plantUMLServer + encodedUML
-		useEffect(() => {
+	const [generatedImage, setGeneratedImage] = useState('')
+	useEffect(() => {
+		async function generateUML() {
+			const encodedUML = plantumlEncoder.encode(umlCode)
+			const plantUMLServer = 'https://www.plantuml.com/plantuml/svg/'
+			const url = plantUMLServer + encodedUML
 			setImage(url)
-		}, [umlCode])
+			setGeneratedImage(url)
+		}
+
+		generateUML()
+	}, [umlCode])
+
+	try {
 		return (
 			<div className="flex flex-col items-center justify-center h-full bg-muted/30 rounded-md p-4 cursor-grab">
 				{isGenerating ? (
@@ -60,7 +67,7 @@ const UMLViewer = ({
 									<div>
 										{umlCode?.length > 0 ? (
 											<img
-												src={url}
+												src={generatedImage}
 												alt="UML Diagram Preview"
 												className="max-w-full max-h-full object-contain"
 											/>

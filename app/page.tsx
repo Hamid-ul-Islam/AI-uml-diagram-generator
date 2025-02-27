@@ -34,7 +34,6 @@ import {
 	LayoutTemplate,
 	Moon,
 	Sun,
-	TicketCheck,
 	Check,
 } from 'lucide-react'
 
@@ -78,6 +77,7 @@ export default function UMLGenerator() {
 			const uml = (await generateUMLAction(description, diagramType)) as string
 			setUmlCode(uml)
 		} catch (error) {
+			console.error(error)
 			alert('Something went wrong/Out of credits')
 		} finally {
 			setIsGenerating(false)
