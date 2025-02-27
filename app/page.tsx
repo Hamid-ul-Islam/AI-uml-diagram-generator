@@ -42,6 +42,8 @@ import plantumlEncoder from 'plantuml-encoder'
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 import { ZoomIn, ZoomOut, RotateCw } from 'lucide-react'
 import UMLViewer from '@/components/UMLViewer'
+import { templates } from '@/constants'
+import { generateUMLAction } from '@/actions/uml.action'
 
 export default function UMLGenerator() {
 	const [description, setDescription] = useState('')
@@ -51,65 +53,10 @@ export default function UMLGenerator() {
 	const [activeTab, setActiveTab] = useState('editor')
 	const editorRef = useRef<HTMLDivElement>(null)
 	const [diagramType, setDiagramType] = useState('class')
-
-	// Mock UML templates
-	const templates = {
-		class: `@startuml
-class User {
-  -String username
-  -String email
-  +login()
-  +logout()
-}
-
-class Post {
-  -String title
-  -String content
-  -Date createdAt
-  +publish()
-}
-
-User "1" -- "many" Post : creates
-@enduml`,
-		sequence: `@startuml
-actor User
-participant "Web App" as A
-participant "API Server" as B
-database "Database" as C
-
-User -> A: Login Request
-A -> B: Authenticate
-B -> C: Query User
-C --> B: Return User Data
-B --> A: Authentication Response
-A --> User: Login Result
-@enduml`,
-		activity: `@startuml
-start
-:User opens application;
-if (Is logged in?) then (yes)
-  :Show dashboard;
-else (no)
-  :Show login form;
-  :User enters credentials;
-  if (Credentials valid?) then (yes)
-    :Authenticate user;
-    :Show dashboard;
-  else (no)
-    :Show error message;
-    stop
-  endif
-endif
-:User interacts with app;
-stop
-@enduml`,
-	}
-
 	// Initialize editor with default template
 	useEffect(() => {
 		if (typeof window !== 'undefined' && editorRef.current) {
-			// In a real implementation, we would initialize Ace editor here
-			// For this demo, we'll just set the UML code
+			// TODO: Implement ace editor initialization
 			setUmlCode(templates.class)
 		}
 	}, [])
@@ -127,52 +74,14 @@ stop
 	const generateUML = async () => {
 		if (!description.trim()) return
 
-		setIsGenerating(true)
-
-		// Simulate API call delay
-		await new Promise(resolve => setTimeout(resolve, 1500))
-
-		// Mock response based on keywords in the description
-		let generatedUML = ''
-
-		if (
-			description.toLowerCase().includes('user') &&
-			description.toLowerCase().includes('post')
-		) {
-			generatedUML = templates.class
-		} else if (
-			description.toLowerCase().includes('sequence') ||
-			description.toLowerCase().includes('api')
-		) {
-			generatedUML = templates.sequence
-		} else if (
-			description.toLowerCase().includes('flow') ||
-			description.toLowerCase().includes('process')
-		) {
-			generatedUML = templates.activity
-		} else {
-			// Default response
-			generatedUML = `@startuml
-' AI-generated UML based on your description:
-' "${description}"
-
-class MainEntity {
-  -String name
-  -String description
-  +performAction()
-}
-
-class RelatedEntity {
-  -String attribute
-  +doSomething()
-}
-
-MainEntity -- RelatedEntity
-@enduml`
+		try {
+			setIsGenerating(true)
+			const uml = await generateUMLAction(description, diagramType)
+			setUmlCode(uml)
+		} catch (error) {
+		} finally {
+			setIsGenerating(false)
 		}
-
-		setUmlCode(generatedUML)
-		setIsGenerating(false)
 	}
 
 	// Mock function to render UML diagram
@@ -219,8 +128,8 @@ MainEntity -- RelatedEntity
 								</TooltipContent>
 							</Tooltip>
 						</TooltipProvider>
-
-						<Button variant="outline" size="sm">
+						{/* TODO: Add share and settings functionality */}
+						{/* <Button variant="outline" size="sm">
 							<Share2 className="h-4 w-4 mr-2" />
 							Share
 						</Button>
@@ -228,7 +137,7 @@ MainEntity -- RelatedEntity
 						<Button variant="outline" size="sm">
 							<Settings className="h-4 w-4 mr-2" />
 							Settings
-						</Button>
+						</Button> */}
 					</div>
 				</div>
 			</header>
