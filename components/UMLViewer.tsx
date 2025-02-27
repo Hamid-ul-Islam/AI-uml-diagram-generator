@@ -23,7 +23,7 @@ const UMLViewer = ({
 						<p>Generating diagram...</p>
 					</div>
 				) : (
-					<TransformWrapper>
+					<TransformWrapper smooth>
 						{({ zoomIn, zoomOut, resetTransform }) => (
 							<>
 								{/* Controls */}
@@ -49,12 +49,20 @@ const UMLViewer = ({
 								</div>
 
 								{/* Image with Zoom & Pan */}
-								<TransformComponent>
-									<img
-										src={url}
-										alt="UML Diagram Preview"
-										className="max-w-full max-h-full object-contain"
-									/>
+								<TransformComponent
+									wrapperStyle={{ width: '100%', height: '100%' }}
+								>
+									<div>
+										{umlCode?.length > 0 ? (
+											<img
+												src={url}
+												alt="UML Diagram Preview"
+												className="max-w-full max-h-full object-contain"
+											/>
+										) : (
+											<p>No diagram available</p>
+										)}
+									</div>
 								</TransformComponent>
 							</>
 						)}

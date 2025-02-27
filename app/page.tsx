@@ -443,7 +443,7 @@ MainEntity -- RelatedEntity
 														{isGenerating ? 'Generating...' : 'Ready'}
 													</div>
 												</div>
-												<div className="h-[500px] overflow-auto">
+												<div className="h-[500px] border overflow-auto">
 													{renderUML()}
 												</div>
 											</div>
