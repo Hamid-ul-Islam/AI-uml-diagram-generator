@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UML Diagram Generator
 
-## Getting Started
+![Project Cover](./cover.png)
 
-First, run the development server:
+A Next.js-based UML Diagram Generator that allows users to create UML diagrams
+from textual descriptions using the PlantUML engine. It features an interactive
+editor with live preview, zooming, panning, and reset functionalities.
+
+## Features
+
+- **ACE Editor**: Supports PlantUML syntax highlighting and editing.
+- **Live UML Preview**: Generates UML diagrams dynamically.
+- **Zoom & Pan**: Users can zoom and pan the diagram within a constrained area.
+- **Reset Position**: Resets the diagram's position and zoom level.
+- **Next.js & API**: Uses a backend API to generate UML code from text input.
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Hamid-ul-Islam/uml-diagram-generator.git
+cd uml-diagram-generator
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+## Usage
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## API Endpoints
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `POST /api/generate-uml` - Accepts a story as input and returns the generated
+  UML code.
 
-## Learn More
+## Technologies Used
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js
+- React
+- PlantUML
+- ACE Editor
+- D3.js
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Feel free to fork the project and submit pull requests.
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License.
