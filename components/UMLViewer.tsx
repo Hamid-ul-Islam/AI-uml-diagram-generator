@@ -16,7 +16,7 @@ const UMLViewer = ({
 		const url = plantUMLServer + encodedUML
 
 		return (
-			<div className="flex flex-col items-center justify-center h-full bg-muted/30 rounded-md p-4">
+			<div className="flex flex-col items-center justify-center h-full bg-muted/30 rounded-md p-4 cursor-grab">
 				{isGenerating ? (
 					<div className="flex flex-col items-center gap-2">
 						<RefreshCw className="animate-spin h-8 w-8" />

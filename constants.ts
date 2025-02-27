@@ -49,3 +49,21 @@ endif
 stop
 @enduml`,
 }
+
+// gemini old models are not familiar with updated syntax so we have to use this
+export const diagramTemplates = {
+	activity: `@startuml
+:Hello world;
+:This is defined on
+several **lines**;
+@enduml
+`,
+	component: `
+  @startuml
+[First component]
+[Another component] as Comp2
+component Comp3
+component [Last\ncomponent] as Comp4
+@enduml
+  `,
+}

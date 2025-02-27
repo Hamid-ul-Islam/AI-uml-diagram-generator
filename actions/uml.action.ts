@@ -1,4 +1,5 @@
 'use server'
+import { diagramTemplates } from '@/constants'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY!)
@@ -8,7 +9,9 @@ export async function generateUMLAction(
 	description: string,
 	diagramType: string,
 ) {
-	const prompt = `Generate ${diagramType} PlantUML code for the following story: ${description}. Return only the UML code, no additional text, no markdown or explanations.`
+	const prompt = `Generate ${diagramType} PlantUML code for the following story: ${description}. Return only the UML code, no additional text, no markdown or explanations. Learn updated syntax from the following diagram templates: ${JSON.stringify(
+		diagramTemplates,
+	)}`
 
 	try {
 		const result = await model.generateContent(prompt)

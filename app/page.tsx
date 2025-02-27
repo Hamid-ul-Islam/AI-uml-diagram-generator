@@ -90,7 +90,6 @@ export default function UMLGenerator() {
 	}
 	const handleTemplateChange = (type: string) => {
 		setDiagramType(type)
-		setUmlCode(templates[type as keyof typeof templates])
 	}
 
 	return (
@@ -201,8 +200,14 @@ export default function UMLGenerator() {
 													<SelectItem value="sequence">
 														Sequence Diagram
 													</SelectItem>
+													<SelectItem value="usecase">
+														Use Case Diagram
+													</SelectItem>
 													<SelectItem value="activity">
 														Activity Diagram
+													</SelectItem>
+													<SelectItem value="component">
+														Component Diagram
 													</SelectItem>
 												</SelectContent>
 											</Select>
