@@ -75,9 +75,10 @@ export default function UMLGenerator() {
 
 		try {
 			setIsGenerating(true)
-			const uml = await generateUMLAction(description, diagramType)
+			const uml = (await generateUMLAction(description, diagramType)) as string
 			setUmlCode(uml)
 		} catch (error) {
+			alert('Something went wrong/Out of credits')
 		} finally {
 			setIsGenerating(false)
 		}

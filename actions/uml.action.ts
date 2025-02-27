@@ -20,7 +20,7 @@ export async function generateUMLAction(
 		return umlCode
 	} catch (error) {
 		console.error(error)
-		return JSON.parse(JSON.stringify(error))
+		throw error
 	}
 }
 
