@@ -34,6 +34,8 @@ import {
 	LayoutTemplate,
 	Moon,
 	Sun,
+	TicketCheck,
+	Check,
 } from 'lucide-react'
 
 import UMLViewer from '@/components/UMLViewer'
@@ -49,6 +51,7 @@ export default function UMLGenerator() {
 	const editorRef = useRef<HTMLDivElement>(null)
 	const [diagramType, setDiagramType] = useState('class')
 	const [image, setImage] = useState('')
+	const [isCopied, setIsCopied] = useState(false)
 	// Initialize editor with default template
 	useEffect(() => {
 		if (typeof window !== 'undefined' && editorRef.current) {
@@ -89,16 +92,17 @@ export default function UMLGenerator() {
 	}
 
 	const handleCopy = () => {
+		setIsCopied(true)
 		navigator.clipboard.writeText(umlCode)
+		setTimeout(() => {
+			setIsCopied(false)
+		}, 2000)
 	}
 
 	const handleDownload = async () => {
 		try {
 			// Fetch the SVG content from the PlantUML URL
-			const response = await fetch(
-				'https://www.plantuml.com/plantuml/svg/JOvD2i8m48NtSueXAwLauTPL1GyWY0U8xL03auba9eiYtjtG5dNrVk1zl5uj5Ak9OU2WYZUbWY_mLojH9gmjIaZqBIY5oD1ndgBizel9rPfxmqQuPBK_WaNZttp8OYG6_XoCS2ZKP3mPTCzwvwYF5RISS0U7tgDBGMQtKe_RGg4d6Tlf3m00',
-			)
-
+			const response = await fetch(image)
 			if (!response.ok) {
 				throw new Error('Failed to fetch the SVG content')
 			}
@@ -299,7 +303,11 @@ export default function UMLGenerator() {
 
 								<div className="flex items-center gap-2">
 									<Button onClick={handleCopy} variant="outline" size="sm">
-										<Copy className="h-4 w-4 mr-2" />
+										{isCopied ? (
+											<Check className="h-4 w-4 mr-2" />
+										) : (
+											<Copy className="h-4 w-4 mr-2" />
+										)}
 										Copy
 									</Button>
 									<Button onClick={handleDownload} variant="outline" size="sm">
