@@ -32,15 +32,10 @@ import {
 	Zap,
 	Lightbulb,
 	LayoutTemplate,
-	Settings,
 	Moon,
 	Sun,
-	Share2,
 } from 'lucide-react'
 
-import plantumlEncoder from 'plantuml-encoder'
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
-import { ZoomIn, ZoomOut, RotateCw } from 'lucide-react'
 import UMLViewer from '@/components/UMLViewer'
 import { templates } from '@/constants'
 import { generateUMLAction } from '@/actions/uml.action'
@@ -53,6 +48,7 @@ export default function UMLGenerator() {
 	const [activeTab, setActiveTab] = useState('editor')
 	const editorRef = useRef<HTMLDivElement>(null)
 	const [diagramType, setDiagramType] = useState('class')
+	const [image, setImage] = useState('')
 	// Initialize editor with default template
 	useEffect(() => {
 		if (typeof window !== 'undefined' && editorRef.current) {
@@ -86,10 +82,46 @@ export default function UMLGenerator() {
 
 	// Mock function to render UML diagram
 	const renderUML = () => {
-		return UMLViewer({ umlCode, isGenerating })
+		return UMLViewer({ umlCode, isGenerating, setImage })
 	}
 	const handleTemplateChange = (type: string) => {
 		setDiagramType(type)
+	}
+
+	const handleCopy = () => {
+		navigator.clipboard.writeText(umlCode)
+	}
+
+	const handleDownload = async () => {
+		try {
+			// Fetch the SVG content from the PlantUML URL
+			const response = await fetch(
+				'https://www.plantuml.com/plantuml/svg/JOvD2i8m48NtSueXAwLauTPL1GyWY0U8xL03auba9eiYtjtG5dNrVk1zl5uj5Ak9OU2WYZUbWY_mLojH9gmjIaZqBIY5oD1ndgBizel9rPfxmqQuPBK_WaNZttp8OYG6_XoCS2ZKP3mPTCzwvwYF5RISS0U7tgDBGMQtKe_RGg4d6Tlf3m00',
+			)
+
+			if (!response.ok) {
+				throw new Error('Failed to fetch the SVG content')
+			}
+
+			// Convert the response to a Blob
+			const svgBlob = await response.blob()
+
+			// Create a URL for the Blob
+			const url = URL.createObjectURL(svgBlob)
+
+			// Create a temporary anchor element to trigger the download
+			const link = document.createElement('a')
+			link.href = url
+			link.download = 'uml.svg' // Set the filename for the downloaded file
+			document.body.appendChild(link) // Append the link to the DOM (required for Firefox)
+			link.click() // Trigger the download
+
+			// Clean up by revoking the Blob URL and removing the link element
+			URL.revokeObjectURL(url)
+			document.body.removeChild(link)
+		} catch (error) {
+			console.error('Error downloading the SVG:', error)
+		}
 	}
 
 	return (
@@ -266,11 +298,11 @@ export default function UMLGenerator() {
 								</TabsList>
 
 								<div className="flex items-center gap-2">
-									<Button variant="outline" size="sm">
+									<Button onClick={handleCopy} variant="outline" size="sm">
 										<Copy className="h-4 w-4 mr-2" />
 										Copy
 									</Button>
-									<Button variant="outline" size="sm">
+									<Button onClick={handleDownload} variant="outline" size="sm">
 										<Download className="h-4 w-4 mr-2" />
 										Export
 									</Button>

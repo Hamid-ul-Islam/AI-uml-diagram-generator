@@ -2,19 +2,24 @@
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 import { RefreshCw, ZoomIn, ZoomOut, RotateCw } from 'lucide-react'
 import plantumlEncoder from 'plantuml-encoder'
+import { useEffect } from 'react'
 
 const UMLViewer = ({
 	umlCode,
 	isGenerating,
+	setImage,
 }: {
 	umlCode: string
 	isGenerating: boolean
+	setImage: (url: string) => void
 }) => {
 	try {
 		const encodedUML = plantumlEncoder.encode(umlCode)
 		const plantUMLServer = 'https://www.plantuml.com/plantuml/svg/'
 		const url = plantUMLServer + encodedUML
-
+		useEffect(() => {
+			setImage(url)
+		}, [umlCode])
 		return (
 			<div className="flex flex-col items-center justify-center h-full bg-muted/30 rounded-md p-4 cursor-grab">
 				{isGenerating ? (
